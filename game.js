@@ -8,6 +8,9 @@ window.onload = () => {
 // Function that starts the game and calls other functions based on specific events
 function startGame() {
   document.getElementById("end").addEventListener("mouseover", winGame)
+  for (let i = 0; i < boundaries.length; i++) {
+    boundaries[i].addEventListener("mouseover", loseGame)
+  }
   document.getElementById("status").innerHTML = "GAME STARTED: DO NOT TOUCH THE BOUNDARIES | DESTINATION: E";
 
 }
@@ -18,8 +21,12 @@ function winGame() {
 
 }
 
+// The lose game function that gets executed upon crossing of the boundaries
 function loseGame() {
-
+  for (let i = 0; i < boundaries.length; i++) {
+    boundaries[i].classList.add("youlose");
+  }
+  document.getElementById("status").innerHTML = "You Lost!! You get a -10! :(";
 }
 
 function cheatGame() {
