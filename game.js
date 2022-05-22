@@ -4,6 +4,8 @@ window.onload = () => {
   document.getElementById("start").addEventListener("mouseover", startGame);
   };
 
+const boundaries = document.getElementsByClassName("boundary");
+
 // We will have 5 functions related to the major features
 // Function that starts the game and calls other functions based on specific events
 function startGame() {
