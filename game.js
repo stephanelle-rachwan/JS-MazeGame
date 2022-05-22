@@ -19,7 +19,7 @@ function startGame() {
   }
   document.getElementById("status").innerHTML = "GAME STARTED: DO NOT TOUCH THE BOUNDARIES | DESTINATION: E";
   document.getElementById("start").addEventListener("click", resetScore);
-
+  document.getElementById("game").addEventListener("mouseleave", cheatGame);
 }
 
 // The win game function that gets executed upon hovering on E
@@ -29,6 +29,7 @@ function winGame() {
   for (let i = 0; i < boundaries.length; i++) {
     boundaries[i].removeEventListener("mouseover", loseGame)
   }
+  document.getElementById("game").removeEventListener("mouseleave", cheatGame);
 }
 
 // The lose game function that gets executed upon crossing of the boundaries
@@ -39,10 +40,19 @@ function loseGame() {
   document.getElementById("status").innerHTML = "You Lost!! You get a -10! :(";
   // so the winGame fct doesn't execute directly after touching the boundaries then E
   document.getElementById("end").removeEventListener("mouseover", winGame);
+  document.getElementById("game").removeEventListener("mouseleave", cheatGame);
 }
 
+// The cheat game function that gets executed if we try to bypass S from the right
+// aka leaving the id="game" div that contains the box
 function cheatGame() {
-
+  document.getElementById("status").innerHTML = "RESTART ya cheater";
+  alert("cheater ;)");
+  document.getElementById("game").removeEventListener("mouseleave", cheatGame);
+  for (let i = 0; i < boundaries.length; i++) {
+    boundaries[i].removeEventListener("mouseover", loseGame)
+  }
+  document.getElementById("end").removeEventListener("mouseover", winGame);
 }
 
 // the reset score function, gets executed upon clicking S; resets the score to 0 
