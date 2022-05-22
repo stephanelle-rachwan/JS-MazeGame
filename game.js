@@ -18,6 +18,8 @@ function startGame() {
     boundaries[i].classList.remove("youlose");
   }
   document.getElementById("status").innerHTML = "GAME STARTED: DO NOT TOUCH THE BOUNDARIES | DESTINATION: E";
+  document.getElementById("start").addEventListener("click", resetScore);
+
 }
 
 // The win game function that gets executed upon hovering on E
@@ -43,6 +45,7 @@ function cheatGame() {
 
 }
 
+// the reset score function, gets executed upon clicking S; resets the score to 0 
 function resetScore() {
-
+  document.getElementById("status").innerHTML = "SCORE RESET | Restart: Get to the E without touching the boundaries";
 }
