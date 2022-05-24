@@ -5,12 +5,57 @@ window.onload = () => {
   document.getElementById("start").addEventListener("mouseover", startGame);
   };
 
+// setting up a timer
+
+// timer variables 
+var dSeconds = 0;
+var lastCounter = 0;
+var best = 99999;
+var timerId = 0;
+
+// formate time based on ds
+function formatTime(ms) {
+  var minutes = Math.floor((ms/600));
+  var seconds = Math.floor((ms - (minutes * 600))/10);
+  var ds = Math.floor(ms - (minutes * 600) - (seconds*10));
+  return minutes+':'+seconds+'.'+ds;
+}
+
+// start counter fct
+function startCounter() {
+    dSeconds += 1;
+    document.getElementById("live-score").innerText = formatTime(dSeconds);
+}
+
+// stop counter fct 
+function stopCounterWon() {
+  lastCounter = dSeconds;
+  document.getElementById("last-score").innerText = formatTime(dSeconds);
+
+  if ( lastCounter < best) {
+    document.getElementById("best-score").innerText = formatTime(lastCounter);
+    best = lastCounter;
+  }
+
+  dSeconds = 0;
+  clearInterval(timerId);
+}
+
+function stopCounterLose() {
+  dSeconds = 0;
+  document.getElementById("live-score").innerText = formatTime(dSeconds);
+  clearInterval(timerId);
+}
+
+
 const boundaries = document.getElementsByClassName("boundary");
 var score = 0;
 
 // We will have 5 functions related to the major features
 // Function that starts the game and calls other functions based on specific events
 function startGame() {
+  timerId = setInterval(startCounter, 100);
+
   document.getElementById("end").addEventListener("mouseover", winGame)
   for (let i = 0; i < boundaries.length; i++) {
     boundaries[i].addEventListener("mouseover", loseGame)
@@ -35,6 +80,8 @@ function winGame() {
   score += 5;
   document.getElementById("end").removeEventListener("mouseover", winGame);
   document.getElementsByClassName('example')[0].innerHTML= "Your score: " + score;
+
+  stopCounterWon();
 }
 
 // The lose game function that gets executed upon crossing of the boundaries
@@ -51,6 +98,8 @@ function loseGame() {
     boundaries[i].removeEventListener("mouseover", loseGame)
   }
   document.getElementsByClassName('example')[0].innerHTML= "Your score: " + score;
+
+  stopCounterLose();
 }
 
 // The cheat game function that gets executed if we try to bypass S from the right
@@ -63,6 +112,8 @@ function cheatGame() {
     boundaries[i].removeEventListener("mouseover", loseGame)
   }
   document.getElementById("end").removeEventListener("mouseover", winGame);
+
+  stopCounterLose();
 }
 
 // the reset score function, gets executed upon clicking S; resets the score to 0 
@@ -70,4 +121,11 @@ function resetScore() {
   document.getElementById("status").innerHTML = "SCORE RESET | Restart: Get to the E without touching the boundaries";
   score = 0;
   document.getElementsByClassName('example')[0].innerHTML= "Your score: " + score;
+
+  dSeconds = 0;
+  lastCounter = 0;
+  best = 0;
+  document.getElementById("live-score").innerText = formatTime(dSeconds);
+  document.getElementById("last-score").innerText = formatTime(lastCounter);
+  document.getElementById("best-score").innerText = formatTime(best);
 }
